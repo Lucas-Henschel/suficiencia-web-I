@@ -43,12 +43,17 @@ listPhotos();
     </div>
     <div v-else class="flex flex-wrap justify-between gap-12">
       <div
-        class="bg-red-500 flex flex-col gap-2 w-[400px] p-8 rounded-xl"
+        class="bg-[#7c7c7c] flex flex-col gap-2 w-[400px] p-8 rounded-xl"
         v-for="(item, index) in photosStore.photos"
         :key="index"
       >
+        <h2 class="text-white text-center text-xl">#{{ item.id }}</h2>
+
         <img :src="item.download_url" class="rounded-xl" alt="photo" />
-        <p>Autor: {{ item.author }}</p>
+
+        <span class="bg-[#27272A] text-white rounded-xl text-sm text-center py-1">
+          <p>Autor: {{ item.author }}</p>
+        </span>
       </div>
     </div>
 
