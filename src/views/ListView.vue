@@ -20,12 +20,14 @@ const paginatedPhotos = computed(() => {
   const startIndex = (currentPage.value - 1) * rowsPerPage.value;
   const endIndex = startIndex + rowsPerPage.value;
 
-  return photosStore.photos.slice(startIndex, endIndex);
+  return photosStore.getPhotos().slice(startIndex, endIndex);
 });
 
+const photosLength = computed(() => photosStore.getPhotos().length);
+
 const preloadImages = async () => {
-  if (photosStore.photos.length > 0) {
-    await Promise.all(photosStore.photos.map(photo => preloadImage(photo.download_url)));
+  if (photosLength.value > 0) {
+    await Promise.all(photosStore.getPhotos().map(photo => preloadImage(photo.download_url)));
 
     imagesLoaded.value = true;
     loading.value = false;
@@ -33,7 +35,7 @@ const preloadImages = async () => {
 };
 
 watchEffect(() => {
-  if (photosStore.photos.length > 0) {
+  if (photosLength.value > 0) {
     preloadImages();
   }
 });
@@ -67,7 +69,7 @@ const onPageChange = (event: PageState) => {
 
     <Paginator
       :rows="rowsPerPage"
-      :totalRecords="photosStore.photos.length"
+      :totalRecords="photosLength"
       :rowsPerPageOptions="[3, 6, 9]"
       @page="onPageChange"
       class="w-full"

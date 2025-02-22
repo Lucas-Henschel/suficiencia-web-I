@@ -4,6 +4,6 @@ import CardView from '@/layout/CardView.vue';
 
 <template>
   <CardView>
-    <h1>Edit</h1>
+    <h1 class="text-2xl">Editar foto</h1>
   </CardView>
 </template>

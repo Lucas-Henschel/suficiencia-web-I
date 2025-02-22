@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import { useTheme } from "./layout/useTheme";
-import { useToast } from "primevue";
+import { Toast, useToast } from "primevue";
 import { usePhotoStore } from "./stores/photo";
 
 const { updateTheme } = useTheme();
@@ -34,6 +34,7 @@ listAllPhotos();
 </script>
 
 <template>
+  <Toast />
   <RouterView />
 </template>
 

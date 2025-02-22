@@ -2,7 +2,7 @@ import { http } from "../http";
 import axios from "axios";
 
 export interface PhotoData {
-  id: number;
+  id: string;
   author: string;
   width: number;
   height: number;

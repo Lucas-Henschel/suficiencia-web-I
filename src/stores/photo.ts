@@ -1,12 +1,10 @@
+import { localStorageKeys } from "@/config/localStorageKeys";
 import PhotoService, { type ListPhotosParams, type PhotoData } from "@/services/photo/PhotoService";
 import { defineStore } from "pinia";
-import { ref } from "vue";
 
 export const usePhotoStore = defineStore(
   "photo",
   () => {
-    const photos = ref<PhotoData[]>([]);
-
     const list = async (params: ListPhotosParams) => {
       const { data, error } = await PhotoService.list(params);
 
@@ -14,13 +12,25 @@ export const usePhotoStore = defineStore(
         throw new Error(error);
       }
 
-      photos.value = data;
-      return photos;
+      localStorage.setItem(localStorageKeys.PHOTOS, JSON.stringify(data));
+
+      return data;
     };
+
+    const getPhotos = (): PhotoData[] => {
+      const photos = localStorage.getItem(localStorageKeys.PHOTOS);
+      return JSON.parse(photos || "[]");
+    }
+
+    const removePhoto = (photoId: string) => {
+      const newPhotos = getPhotos().filter((photo: PhotoData) => photo.id !== photoId);
+      localStorage.setItem(localStorageKeys.PHOTOS, JSON.stringify(newPhotos));
+    }
 
     return {
       list,
-      photos,
+      getPhotos,
+      removePhoto,
     };
   },
   {
