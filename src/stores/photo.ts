@@ -15,7 +15,6 @@ export const usePhotoStore = defineStore(
       }
 
       photos.value = data;
-
       return photos;
     };
 
