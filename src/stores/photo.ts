@@ -14,9 +14,9 @@ export const usePhotoStore = defineStore(
         throw new Error(error);
       }
 
-      photos.value = data.slice(0, 6);
+      photos.value = data;
 
-      return data;
+      return photos;
     };
 
     return {
