@@ -4,8 +4,9 @@ import axios from "axios";
 export interface PhotoData {
   id: string;
   author: string;
-  width: number;
-  height: number;
+  description: string;
+  width?: number;
+  height?: number;
   url: string;
   download_url: string;
 }
@@ -18,6 +19,7 @@ export default class PhotoService {
   static async list(params: ListPhotosParams) {
     try {
       const data = await http.get<PhotoData[]>("/list", { params });
+      console.log(data.data);
 
       return { data: data.data, error: null };
     } catch (error: unknown) {

@@ -11,7 +11,6 @@ import { computed, ref, watchEffect } from 'vue';
 const photosStore = usePhotoStore();
 
 const loading = ref<boolean>(true);
-const imagesLoaded = ref<boolean>(false);
 
 const currentPage = ref<number>(1);
 const rowsPerPage = ref<number>(3);
@@ -29,7 +28,6 @@ const preloadImages = async () => {
   if (photosLength.value > 0) {
     await Promise.all(photosStore.getPhotos().map(photo => preloadImage(photo.download_url)));
 
-    imagesLoaded.value = true;
     loading.value = false;
   }
 };
@@ -56,15 +54,15 @@ const onPageChange = (event: PageState) => {
   <CardView>
     <h1 class="text-2xl">Galeria de fotos</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
-      <PhotoCard
-        v-for="(item, index) in paginatedPhotos"
-        :id="item.id"
-        :downloadUrl="item.download_url"
-        :author="item.author"
-        :loading="loading"
-        :key="index"
-      />
+    <div class="flex justify-center items-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+        <PhotoCard
+          v-for="(item, index) in paginatedPhotos"
+          :photo="item"
+          :loading="loading"
+          :key="index"
+        />
+      </div>
     </div>
 
     <Paginator
