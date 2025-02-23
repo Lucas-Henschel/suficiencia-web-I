@@ -42,7 +42,7 @@ onMounted(fetchPhotos);
 </script>
 
 <template>
-  <CardView>
+  <CardView class="px-0">
     <div class="flex flex-col justify-center items-center my-8">
       <h1 class="text-2xl mb-4">Galeria de fotos</h1>
 
