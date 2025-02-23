@@ -87,7 +87,7 @@ const onFormSubmit = ({ valid }: FormSubmitEvent) => {
         @submit="onFormSubmit"
         class="flex flex-col gap-4 w-full"
       >
-        <div class="flex gap-12">
+        <div class="flex flex-col lg:flex-row gap-4 lg:gap-12">
           <div class="flex flex-col gap-1 w-full">
             <label for="author">Autor</label>
             <InputText
