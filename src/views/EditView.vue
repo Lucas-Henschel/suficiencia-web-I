@@ -76,7 +76,7 @@ const onFormSubmit = ({ valid }: FormSubmitEvent) => {
         filter
         optionLabel="id"
         placeholder="Selecione o id da foto"
-        class="w-[300px] mb-8"
+        class="w-full lg:w-[300px] mb-8"
       />
 
       <Form
