@@ -34,12 +34,6 @@ const resolver = ref(zodResolver(
   })
 ));
 
-const resetForm = () => {
-  initialValues.author = '';
-  initialValues.description = '';
-  initialValues.photoUrl = '';
-};
-
 const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
   if (valid) {
     const createdPhoto = photosStore.addPhoto(values as CreatePhotoForm);
@@ -50,8 +44,6 @@ const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
       detail: `Foto com id '${createdPhoto.id}' adicionada com sucesso`,
       life: 3000,
     });
-
-    resetForm();
   }
 };
 </script>

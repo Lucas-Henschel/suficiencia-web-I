@@ -1,6 +1,7 @@
 import { localStorageKeys } from "@/config/localStorageKeys";
 import PhotoService, { type ListPhotosParams, type PhotoData } from "@/services/photo/PhotoService";
 import type { CreatePhotoForm } from "@/views/AddView.vue";
+import type { EditPhotoForm } from "@/views/EditView.vue";
 import { defineStore } from "pinia";
 
 export const usePhotoStore = defineStore(
@@ -31,28 +32,38 @@ export const usePhotoStore = defineStore(
     };
 
     const addPhoto = (photoData: CreatePhotoForm): PhotoData => {
-      const id = getPhotos().length + 1;
+      const photos = getPhotos();
+      const lastPhoyo = photos[photos.length - 1];
+      const newId = Number(lastPhoyo.id) + 1;
 
       const newPhoto: PhotoData = {
-        id: String(id),
+        id: String(newId),
         download_url: photoData.photoUrl,
         author: photoData.author,
         description: photoData.description,
         url: photoData.photoUrl,
       };
 
-      const photos = getPhotos();
       photos.push(newPhoto);
+      localStorage.setItem(localStorageKeys.PHOTOS, JSON.stringify(photos));
+
+      return newPhoto;
+    };
+
+    const editPhoto = (photoData: EditPhotoForm, photoId: string) => {
+      const photos = getPhotos().map(photo =>
+        photo.id === photoId ? { ...photo, ...photoData } : photo
+      );
 
       localStorage.setItem(localStorageKeys.PHOTOS, JSON.stringify(photos));
-      return newPhoto;
-    }
+    };
 
     return {
       list,
       getPhotos,
       removePhoto,
       addPhoto,
+      editPhoto,
     };
   },
   {

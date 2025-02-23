@@ -18,16 +18,22 @@ const { photo, loading } = defineProps<PhotoCardProps>();
       #{{ photo.id }}
     </h2>
 
-    <Skeleton v-if="loading" width="334px" height="223px" class="p-8" />
+    <Skeleton v-if="loading" height="223px" class="p-8" />
     <img
       v-else
       :src="photo.download_url"
-      class="rounded-xl h-[223px]"
-      :alt="photo.description ?? photo.author"
+      class="rounded-xl h-[223px] w-full object-cover"
+      :alt="photo.description"
     />
 
     <span class="bg-[#27272A] text-white rounded-xl text-sm text-center py-1">
       <p>Autor: {{ photo.author }}</p>
+    </span>
+
+    <span class="bg-[#27272A] text-white rounded-xl text-sm text-center py-1">
+      <p>
+        Descrição: {{ photo.description ? photo.description : 'Sem descrição' }}
+      </p>
     </span>
   </div>
 </template>
