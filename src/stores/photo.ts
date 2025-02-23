@@ -8,7 +8,7 @@ export const usePhotoStore = defineStore(
   "photo",
   () => {
     const list = async (params: ListPhotosParams) => {
-      if (getPhotos().length === 0) {
+      if (!localStorage.getItem(localStorageKeys.PHOTOS)) {
         const { data, error } = await PhotoService.list(params);
 
         if (!data || error) {

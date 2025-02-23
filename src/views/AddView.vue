@@ -44,9 +44,9 @@ const resetForm = () => {
   initialValues.download_url = '';
 }
 
-const onFormSubmit = ({ valid }: FormSubmitEvent) => {
+const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
   if (valid) {
-    const createdPhoto = photosStore.addPhoto(initialValues);
+    const createdPhoto = photosStore.addPhoto(values as CreatePhotoForm);
 
     toast.add({
       severity: "success",

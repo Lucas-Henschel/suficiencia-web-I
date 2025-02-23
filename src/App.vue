@@ -1,40 +1,26 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import { useTheme } from "./layout/useTheme";
-import { Toast, useToast } from "primevue";
 import { usePhotoStore } from "./stores/photo";
-
+import { onMounted } from "vue";
+import type { ListPhotosParams } from "./services/photo/PhotoService";
 const { updateTheme } = useTheme();
 
 const photosStore = usePhotoStore();
 
-const toast = useToast();
-
-const listAllPhotos = async () => {
-  try {
-    const params = {
-      page: 1,
-      limit: 999,
-    };
-
-    await photosStore.list(params);
-  } catch (err) {
-    const error = err as Error;
-
-    toast.add({
-      severity: "error",
-      summary: error.message,
-      life: 3000,
-    });
-  }
-}
-
 updateTheme();
-listAllPhotos();
+
+onMounted(() => {
+  const param: ListPhotosParams = {
+    page: 1,
+    limit: 999,
+  }
+
+  photosStore.list(param);
+});
 </script>
 
 <template>
-  <Toast />
   <RouterView />
 </template>
 

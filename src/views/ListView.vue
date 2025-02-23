@@ -4,9 +4,9 @@ import CardView from '@/layout/CardView.vue';
 import { usePhotoStore } from '@/stores/photo';
 import { preloadImage } from '@/utils/imageHelper';
 
-import { Paginator, type PageState } from 'primevue';
+import { Paginator, Skeleton, type PageState } from 'primevue';
 
-import { computed, ref, watchEffect } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const photosStore = usePhotoStore();
 
@@ -17,49 +17,48 @@ const rowsPerPage = ref<number>(3);
 
 const paginatedPhotos = computed(() => {
   const startIndex = (currentPage.value - 1) * rowsPerPage.value;
-  const endIndex = startIndex + rowsPerPage.value;
-
-  return photosStore.getPhotos().slice(startIndex, endIndex);
+  return photosStore.getPhotos().slice(startIndex, startIndex + rowsPerPage.value);
 });
-
-const photosLength = computed(() => photosStore.getPhotos().length);
 
 const preloadImages = async () => {
-  if (photosLength.value > 0) {
-    await Promise.all(photosStore.getPhotos().map(photo => preloadImage(photo.download_url)));
-
-    loading.value = false;
-  }
+  await Promise.all(paginatedPhotos.value.map(photo => preloadImage(photo.download_url)));
+  loading.value = false;
 };
 
-watchEffect(() => {
-  if (photosLength.value > 0) {
-    preloadImages();
-  }
-});
-
-const onPageChange = (event: PageState) => {
+const fetchPhotos = async () => {
   loading.value = true;
 
+  await preloadImages();
+};
+
+const onPageChange = async (event: PageState) => {
   currentPage.value = event.page + 1;
   rowsPerPage.value = event.rows;
 
-  setTimeout(() => {
-    preloadImages();
-  }, 300);
+  await fetchPhotos();
 };
+
+onMounted(fetchPhotos);
 </script>
 
 <template>
   <CardView>
     <h1 class="text-2xl">Galeria de fotos</h1>
 
-    <div class="flex justify-center items-center">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+    <div class="flex flex-col justify-center items-center my-8">
+      <div v-if="loading" class="flex flex-wrap justify-center gap-12">
+        <Skeleton
+          v-for="(item, index) in rowsPerPage"
+          width="350px"
+          height="343px"
+          :key="index"
+        />
+      </div>
+
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 ">
         <PhotoCard
           v-for="(item, index) in paginatedPhotos"
           :photo="item"
-          :loading="loading"
           :key="index"
         />
       </div>
@@ -67,7 +66,7 @@ const onPageChange = (event: PageState) => {
 
     <Paginator
       :rows="rowsPerPage"
-      :totalRecords="photosLength"
+      :totalRecords="photosStore.getPhotos().length"
       :rowsPerPageOptions="[3, 6, 9]"
       @page="onPageChange"
       class="w-full"

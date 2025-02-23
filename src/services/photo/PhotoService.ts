@@ -12,6 +12,7 @@ export interface PhotoData {
 }
 
 export interface ListPhotosParams {
+  page: number;
   limit: number;
 }
 
