@@ -43,9 +43,9 @@ onMounted(fetchPhotos);
 
 <template>
   <CardView>
-    <h1 class="text-2xl">Galeria de fotos</h1>
-
     <div class="flex flex-col justify-center items-center my-8">
+      <h1 class="text-2xl mb-4">Galeria de fotos</h1>
+
       <div v-if="loading" class="flex flex-wrap justify-center gap-12">
         <Skeleton
           v-for="(item, index) in rowsPerPage"
