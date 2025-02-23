@@ -31,9 +31,26 @@ Este é um projeto de suficiência da matéria de Web I, com o objetivo de criar
 ## 🎨 Layout
 
 Listagem das fotos
-<img src="https://github.com/Lucas-Henschel/workshop-javafx-jdbc/blob/main/src/assets/seller-page.PNG" alt="List photos">
+
+<img src="https://github.com/Lucas-Henschel/suficiencia-web-I/blob/main/public/assets/doc/list-photos.png" alt="List photos">
 
 ##
+
+Adicionando uma nova foto a sua galeria
+
+<img src="https://github.com/Lucas-Henschel/suficiencia-web-I/blob/main/public/assets/doc/create-photo.png" alt="Create photo">
+
+##
+
+Editando uma foto da sua galeria
+
+<img src="https://github.com/Lucas-Henschel/suficiencia-web-I/blob/main/public/assets/doc/edit-photo.png" alt="Edit photo">
+
+##
+
+Excluindo uma foto da sua galeria
+
+<img src="https://github.com/Lucas-Henschel/suficiencia-web-I/blob/main/public/assets/doc/delete-photo.png" alt="Delete photo">
 
 ---
 
