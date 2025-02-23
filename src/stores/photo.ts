@@ -38,10 +38,10 @@ export const usePhotoStore = defineStore(
 
       const newPhoto: PhotoData = {
         id: String(newId),
-        download_url: photoData.photoUrl,
+        download_url: photoData.download_url,
         author: photoData.author,
         description: photoData.description,
-        url: photoData.photoUrl,
+        url: photoData.download_url,
       };
 
       photos.push(newPhoto);
