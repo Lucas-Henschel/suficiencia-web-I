@@ -13,30 +13,40 @@ import { z } from 'zod';
 export interface CreatePhotoForm {
   author: string;
   description: string;
-  photoUrl: string;
+  download_url: string;
 }
 
 const initialValues = reactive<CreatePhotoForm>({
   author: '',
   description: '',
-  photoUrl: '',
+  download_url: '',
 });
 
 const photosStore = usePhotoStore();
 
 const toast = useToast();
 
+const formKey = ref(0);
+
 const resolver = ref(zodResolver(
   z.object({
     author: z.string().min(1, { message: 'Nome do autor é obrigátorio' }),
     description: z.string().min(1, { message: 'Descrição da imagem é obrigátorio' }),
-    photoUrl: z.string().min(1, { message: 'URL da foto é obrigátorio' }),
+    download_url: z
+      .string({ message: 'URL da foto é obrigátorio' })
+      .url({ message: 'URL inválida' }),
   })
 ));
 
-const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
+const resetForm = () => {
+  initialValues.author = '';
+  initialValues.description = '';
+  initialValues.download_url = '';
+}
+
+const onFormSubmit = ({ valid }: FormSubmitEvent) => {
   if (valid) {
-    const createdPhoto = photosStore.addPhoto(values as CreatePhotoForm);
+    const createdPhoto = photosStore.addPhoto(initialValues);
 
     toast.add({
       severity: "success",
@@ -44,6 +54,9 @@ const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
       detail: `Foto com id '${createdPhoto.id}' adicionada com sucesso`,
       life: 3000,
     });
+
+    resetForm();
+    formKey.value++;
   }
 };
 </script>
@@ -55,6 +68,7 @@ const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
     <div class="flex flex-col justify-center my-8">
       <Form
         v-slot="$form"
+        :key="formKey"
         :initialValues
         :resolver
         @submit="onFormSubmit"
@@ -63,7 +77,12 @@ const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
         <div class="flex gap-12">
           <div class="flex flex-col gap-1 w-full">
             <label for="author">Autor</label>
-            <InputText name="author" type="text" placeholder="Autor" fluid />
+            <InputText
+              name="author"
+              type="text"
+              placeholder="Autor"
+              fluid
+            />
 
             <Message
               v-if="$form.author?.invalid"
@@ -77,7 +96,12 @@ const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
 
           <div class="flex flex-col gap-1 w-full">
             <label for="description">Descrição da imagem</label>
-            <InputText name="description" type="text" placeholder="Descrição da imagem" fluid />
+              <InputText
+                name="description"
+                type="text"
+                placeholder="Descrição da imagem"
+                fluid
+              />
 
             <Message
               v-if="$form.description?.invalid"
@@ -91,16 +115,21 @@ const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
         </div>
 
         <div class="flex flex-col gap-1">
-          <label for="photoUrl">URL da foto</label>
-          <InputText name="photoUrl" type="text" placeholder="URL da foto" fluid />
+          <label for="download_url">URL da foto</label>
+            <InputText
+              name="download_url"
+              type="text"
+              placeholder="URL da foto"
+              fluid
+            />
 
           <Message
-            v-if="$form.photoUrl?.invalid"
+            v-if="$form.download_url?.invalid"
             severity="error"
             size="small"
             variant="simple"
           >
-            {{ $form.photoUrl.error?.message }}
+            {{ $form.download_url.error?.message }}
           </Message>
         </div>
 

@@ -40,10 +40,11 @@ const resolver = ref(zodResolver(
   z.object({
     author: z.string().min(1, { message: 'Nome do autor é obrigátorio' }),
     description: z.string().min(1, { message: 'Descrição da imagem é obrigátorio' }).optional(),
-    photoUrl: z.string().min(1, { message: 'URL da foto é obrigátorio' }),
+    download_url: z
+      .string({ message: 'URL da foto é obrigátorio' })
+      .url({ message: 'URL inválida' }),
   })
 ));
-
 
 const onFormSubmit = ({ valid }: FormSubmitEvent) => {
   if (valid) {
