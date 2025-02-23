@@ -10,7 +10,7 @@ const { photo } = defineProps<PhotoCardProps>();
 
 <template>
   <div
-    class="bg-[#a3a3a3] flex flex-col gap-2 w-full min-w-[350px] max-w-[400px] rounded-xl dark:bg-[#444242]"
+    class="bg-[#a3a3a3] flex flex-col gap-2 w-[350px] rounded-xl dark:bg-[#444242] lg:w-[400px]"
   >
     <img
       :src="photo.download_url"
