@@ -30,7 +30,16 @@ const preloadImages = async () => {
     return;
   }
 
-  await Promise.all(paginatedPhotos.value.map(photo => preloadImage(photo.download_url)));
+  const results = await Promise.allSettled(
+    paginatedPhotos.value.map(photo => preloadImage(photo.download_url))
+  );
+
+  results.forEach((result, index) => {
+    if (result.status === "rejected") {
+      paginatedPhotos.value[index].download_url = "@/assets/image-not-found.png";
+    }
+  });
+
   loading.value = false;
 };
 
