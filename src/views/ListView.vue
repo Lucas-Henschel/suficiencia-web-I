@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import PhotoCard from '@/components/PhotoCard.vue';
 import CardView from '@/layout/CardView.vue';
+import type { ListPhotosParams, PhotoData } from '@/services/photo/PhotoService';
 import { usePhotoStore } from '@/stores/photo';
 import { preloadImage } from '@/utils/imageHelper';
 
 import { Paginator, Skeleton, type PageState } from 'primevue';
 
-import { computed, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 const photosStore = usePhotoStore();
 
@@ -15,12 +16,20 @@ const loading = ref<boolean>(true);
 const currentPage = ref<number>(1);
 const rowsPerPage = ref<number>(3);
 
-const paginatedPhotos = computed(() => {
+const paginatedPhotos = ref<PhotoData[]>([]);
+
+const getPaginatedPhotos = () => {
   const startIndex = (currentPage.value - 1) * rowsPerPage.value;
-  return photosStore.getPhotos().slice(startIndex, startIndex + rowsPerPage.value);
-});
+  const endIndex = currentPage.value * rowsPerPage.value;
+
+  paginatedPhotos.value = photosStore.getPhotos().slice(startIndex, endIndex);
+}
 
 const preloadImages = async () => {
+  if (paginatedPhotos.value.length === 0) {
+    return;
+  }
+
   await Promise.all(paginatedPhotos.value.map(photo => preloadImage(photo.download_url)));
   loading.value = false;
 };
@@ -28,6 +37,7 @@ const preloadImages = async () => {
 const fetchPhotos = async () => {
   loading.value = true;
 
+  getPaginatedPhotos();
   await preloadImages();
 };
 
@@ -38,7 +48,17 @@ const onPageChange = async (event: PageState) => {
   await fetchPhotos();
 };
 
-onMounted(fetchPhotos);
+const listAllPhotos = async () => {
+  const param: ListPhotosParams = {
+    page: 1,
+    limit: 999,
+  }
+
+  await photosStore.list(param);
+  await fetchPhotos();
+}
+
+listAllPhotos();
 </script>
 
 <template>
