@@ -10,10 +10,17 @@ const { photo } = defineProps<PhotoCardProps>();
 
 <template>
   <div
-    class="bg-[#a3a3a3] flex flex-col gap-2 w-[350px] rounded-xl dark:bg-[#444242] lg:w-[400px]"
+    class="bg-[#a3a3a3] flex flex-col gap-2 w-[350px] rounded-xl dark:bg-[#444242] lg:max-w-[400px]"
   >
     <img
+      v-if="photo.download_url"
       :src="photo.download_url"
+      class="rounded-t-xl h-[223px] w-full object-cover"
+      :alt="photo.description"
+    />
+    <img
+      v-else
+      src="../assets/image-not-found.png"
       class="rounded-t-xl h-[223px] w-full object-cover"
       :alt="photo.description"
     />
