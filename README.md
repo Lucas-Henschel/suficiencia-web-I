@@ -9,11 +9,16 @@
  <a href="#contribuidores">Contribuidores</a> 
 </p>
 
+<br />
+
 ## 💻 Sobre o projeto
 
 Este é um projeto de suficiência da matéria de Web I, com o objetivo de criar uma interface gráfica interativa utilizando HTML, CSS e JavaScript, ou uma framework de sua preferência.
 
 ---
+
+<br />
+
 
 ## Funcionalidades
  
@@ -28,31 +33,39 @@ Este é um projeto de suficiência da matéria de Web I, com o objetivo de criar
 
 ---
 
+<br />
+
 ## 🎨 Layout
 
+\
 Listagem das fotos
 
 <img src="https://github.com/Lucas-Henschel/suficiencia-web-I/blob/main/public/assets/doc/list-photos.png" alt="List photos">
 
 ##
 
+\
 Adicionando uma nova foto a sua galeria
 
 <img src="https://github.com/Lucas-Henschel/suficiencia-web-I/blob/main/public/assets/doc/create-photo.png" alt="Create photo">
 
 ##
 
+\
 Editando uma foto da sua galeria
 
 <img src="https://github.com/Lucas-Henschel/suficiencia-web-I/blob/main/public/assets/doc/edit-photo.png" alt="Edit photo">
 
 ##
 
+\
 Excluindo uma foto da sua galeria
 
 <img src="https://github.com/Lucas-Henschel/suficiencia-web-I/blob/main/public/assets/doc/delete-photo.png" alt="Delete photo">
 
 ---
+
+<br />
 
 ## 🚀 Como executar o projeto
 
@@ -79,6 +92,8 @@ $ npm run dev
 ```
 ---
 
+<br />
+
 ## 🛠 Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
@@ -86,6 +101,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - **[Vue](https://vuejs.org/)**
 - **[Primevue](https://primevue.org/)**
 - **[TypeScript](https://www.typescriptlang.org/)**
+
+<br />
 
 ## Contribuidores
 
