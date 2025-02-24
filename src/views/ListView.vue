@@ -36,7 +36,7 @@ const preloadImages = async () => {
 
   results.forEach((result, index) => {
     if (result.status === "rejected") {
-      paginatedPhotos.value[index].download_url = "./../assets/image-not-found.png";
+      paginatedPhotos.value[index].download_url = "";
     }
   });
 
