@@ -4,5 +4,6 @@ export const preloadImage = (src: string) => {
 
     img.src = src;
     img.onload = () => resolve();
+    img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
   });
 };
