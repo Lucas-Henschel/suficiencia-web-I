@@ -66,7 +66,7 @@ listAllPhotos();
     <div class="flex flex-col justify-center items-center my-8">
       <h1 class="text-2xl mb-4">Galeria de fotos</h1>
 
-      <div v-if="loading" class="flex flex-wrap justify-center gap-12">
+      <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 ">
         <Skeleton
           v-for="(item, index) in rowsPerPage"
           width="350px"
@@ -75,7 +75,7 @@ listAllPhotos();
         />
       </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 ">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
         <PhotoCard
           v-for="(item, index) in paginatedPhotos"
           :photo="item"
