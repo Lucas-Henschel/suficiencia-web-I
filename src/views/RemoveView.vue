@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from "vue";
 
-import InputText from 'primevue/inputtext';
+import InputText from "primevue/inputtext";
 
-import CardView from '@/layout/CardView.vue';
-import { Button, Toast, useToast } from 'primevue';
-import { usePhotoStore } from '@/stores/photo';
+import CardView from "@/layout/CardView.vue";
+import { Button, Toast, useToast } from "primevue";
+import { usePhotoStore } from "@/stores/photo";
 
 const toast = useToast();
 
@@ -24,7 +24,9 @@ const validPhotoId = (): string | null => {
     return null;
   }
 
-  const existPhotoId = photosStore.getPhotos().some(photo => photo.id === selectedPhotoId.value);
+  const existPhotoId = photosStore
+    .getPhotos()
+    .some((photo) => photo.id === Number(selectedPhotoId.value));
 
   if (!existPhotoId) {
     toast.add({
@@ -37,7 +39,7 @@ const validPhotoId = (): string | null => {
   }
 
   return selectedPhotoId.value;
-}
+};
 
 const resetForm = () => {
   selectedPhotoId.value = "";
@@ -47,7 +49,7 @@ const removePhoto = () => {
   const photoId = validPhotoId();
 
   if (photoId != null) {
-    photosStore.removePhoto(photoId);
+    photosStore.removePhoto(Number(photoId));
 
     toast.add({
       severity: "success",
@@ -59,7 +61,6 @@ const removePhoto = () => {
 
   resetForm();
 };
-
 </script>
 
 <template>

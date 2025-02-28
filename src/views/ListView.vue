@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import PhotoCard from '@/components/PhotoCard.vue';
-import CardView from '@/layout/CardView.vue';
-import type { ListPhotosParams, PhotoData } from '@/services/photo/PhotoService';
-import { usePhotoStore } from '@/stores/photo';
-import { preloadImage } from '@/utils/imageHelper';
+import PhotoCard from "@/components/PhotoCard.vue";
+import CardView from "@/layout/CardView.vue";
+import type { PhotoData } from "@/services/photo/PhotoService";
+import { usePhotoStore } from "@/stores/photo";
+import { preloadImage } from "@/utils/imageHelper";
 
-import { Paginator, Skeleton, type PageState } from 'primevue';
+import { Paginator, Skeleton, type PageState } from "primevue";
 
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const photosStore = usePhotoStore();
 
@@ -23,7 +23,7 @@ const getPaginatedPhotos = () => {
   const endIndex = currentPage.value * rowsPerPage.value;
 
   paginatedPhotos.value = photosStore.getPhotos().slice(startIndex, endIndex);
-}
+};
 
 const preloadImages = async () => {
   if (paginatedPhotos.value.length === 0) {
@@ -31,7 +31,7 @@ const preloadImages = async () => {
   }
 
   const results = await Promise.allSettled(
-    paginatedPhotos.value.map(photo => preloadImage(photo.download_url))
+    paginatedPhotos.value.map((photo) => preloadImage(photo.download_url)),
   );
 
   results.forEach((result, index) => {
@@ -58,14 +58,9 @@ const onPageChange = async (event: PageState) => {
 };
 
 const listAllPhotos = async () => {
-  const param: ListPhotosParams = {
-    page: 1,
-    limit: 999,
-  }
-
-  await photosStore.list(param);
+  await photosStore.list();
   await fetchPhotos();
-}
+};
 
 listAllPhotos();
 </script>
@@ -75,21 +70,12 @@ listAllPhotos();
     <div class="flex flex-col justify-center items-center my-8">
       <h1 class="text-2xl mb-4">Galeria de fotos</h1>
 
-      <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 ">
-        <Skeleton
-          v-for="(item, index) in rowsPerPage"
-          width="350px"
-          height="343px"
-          :key="index"
-        />
+      <div v-if="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <Skeleton v-for="(item, index) in rowsPerPage" width="350px" height="343px" :key="index" />
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-        <PhotoCard
-          v-for="(item, index) in paginatedPhotos"
-          :photo="item"
-          :key="index"
-        />
+        <PhotoCard v-for="(item, index) in paginatedPhotos" :photo="item" :key="index" />
       </div>
     </div>
 

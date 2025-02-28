@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PhotoData } from '@/services/photo/PhotoService';
+import type { PhotoData } from "@/services/photo/PhotoService";
 
 interface PhotoCardProps {
-  photo: PhotoData,
+  photo: PhotoData;
 }
 
 const { photo } = defineProps<PhotoCardProps>();
@@ -16,30 +16,22 @@ const { photo } = defineProps<PhotoCardProps>();
       v-if="photo.download_url"
       :src="photo.download_url"
       class="rounded-t-xl h-[223px] w-full object-cover"
-      :alt="photo.description"
+      :alt="photo.title"
     />
     <img
       v-else
       src="../assets/image-not-found.png"
       class="rounded-t-xl h-[223px] w-full object-cover"
-      :alt="photo.description"
+      :alt="photo.title"
     />
 
     <div class="px-6 mb-6">
-      <div class="flex justify-between items-center my-4 text-black dark:text-white">
+      <div class="flex justify-between gap-4 items-center my-4 text-black dark:text-white">
         <h1 class="text-lg">
-          {{ photo.author }}
+          {{ photo.title }}
         </h1>
 
-        <h3>
-          #{{ photo.id }}
-        </h3>
-      </div>
-
-      <div class="bg-[#27272A] text-white rounded-xl text-sm text-center py-1">
-        <p>
-          Descrição: {{ photo.description ? photo.description : 'Sem descrição' }}
-        </p>
+        <h3 class="text-2xl">#{{ photo.id }}</h3>
       </div>
     </div>
   </div>

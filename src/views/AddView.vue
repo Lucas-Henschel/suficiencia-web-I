@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref } from "vue";
 
-import CardView from '@/layout/CardView.vue';
-import { usePhotoStore } from '@/stores/photo';
+import CardView from "@/layout/CardView.vue";
+import { usePhotoStore } from "@/stores/photo";
 
-import { Form, type FormSubmitEvent } from '@primevue/forms';
-import { zodResolver } from '@primevue/forms/resolvers/zod';
-import { Button, InputText, Message, Toast, useToast } from 'primevue';
+import { Form, type FormSubmitEvent } from "@primevue/forms";
+import { zodResolver } from "@primevue/forms/resolvers/zod";
+import { Button, InputText, Message, Toast, useToast } from "primevue";
 
-import { z } from 'zod';
+import { z } from "zod";
 
 export interface CreatePhotoForm {
-  author: string;
-  description: string;
+  title: string;
+  albumId: number | null;
   download_url: string;
 }
 
 const initialValues = reactive<CreatePhotoForm>({
-  author: '',
-  description: '',
-  download_url: '',
+  title: "",
+  albumId: null,
+  download_url: "",
 });
 
 const photosStore = usePhotoStore();
@@ -27,26 +27,35 @@ const photosStore = usePhotoStore();
 const toast = useToast();
 
 const formKey = ref(0);
+const loading = ref<boolean>(false);
 
-const resolver = ref(zodResolver(
-  z.object({
-    author: z.string().min(1, { message: 'Nome do autor é obrigátorio' }),
-    description: z.string().min(1, { message: 'Descrição da imagem é obrigátorio' }),
-    download_url: z
-      .string({ message: 'URL da foto é obrigátorio' })
-      .url({ message: 'URL inválida' }),
-  })
-));
+const resolver = ref(
+  zodResolver(
+    z.object({
+      title: z.string().min(1, { message: "Título é obrigátorio" }),
+      albumId: z.coerce
+        .number({ message: "Id do álbum é obrigátorio" })
+        .min(1, { message: "Id do álbum deve ser maior que zero" }),
+      download_url: z
+        .string({ message: "URL da foto é obrigátorio" })
+        .url({ message: "URL inválida" }),
+    }),
+  ),
+);
 
 const resetForm = () => {
-  initialValues.author = '';
-  initialValues.description = '';
-  initialValues.download_url = '';
-}
+  initialValues.title = "";
+  initialValues.albumId = null;
+  initialValues.download_url = "";
+};
 
-const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
+const onFormSubmit = async ({ valid, values }: FormSubmitEvent) => {
   if (valid) {
-    const createdPhoto = photosStore.addPhoto(values as CreatePhotoForm);
+    loading.value = true;
+
+    const createdPhoto = await photosStore.addPhoto(values as CreatePhotoForm);
+
+    loading.value = false;
 
     toast.add({
       severity: "success",
@@ -76,52 +85,27 @@ const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
       >
         <div class="flex flex-col lg:flex-row gap-4 lg:gap-12">
           <div class="flex flex-col gap-1 w-full">
-            <label for="author">Autor</label>
-            <InputText
-              name="author"
-              type="text"
-              placeholder="Autor"
-              fluid
-            />
+            <label for="title">Título</label>
+            <InputText name="title" type="text" placeholder="Título" fluid />
 
-            <Message
-              v-if="$form.author?.invalid"
-              severity="error"
-              size="small"
-              variant="simple"
-            >
-              {{ $form.author.error?.message }}
+            <Message v-if="$form.title?.invalid" severity="error" size="small" variant="simple">
+              {{ $form.title.error?.message }}
             </Message>
           </div>
 
           <div class="flex flex-col gap-1 w-full">
-            <label for="description">Descrição da imagem</label>
-              <InputText
-                name="description"
-                type="text"
-                placeholder="Descrição da imagem"
-                fluid
-              />
+            <label for="albumId">Id do album</label>
+            <InputText name="albumId" type="text" placeholder="Id do album" fluid />
 
-            <Message
-              v-if="$form.description?.invalid"
-              severity="error"
-              size="small"
-              variant="simple"
-            >
-              {{ $form.description.error?.message }}
+            <Message v-if="$form.albumId?.invalid" severity="error" size="small" variant="simple">
+              {{ $form.albumId.error?.message }}
             </Message>
           </div>
         </div>
 
         <div class="flex flex-col gap-1">
           <label for="download_url">URL da foto</label>
-            <InputText
-              name="download_url"
-              type="text"
-              placeholder="URL da foto"
-              fluid
-            />
+          <InputText name="download_url" type="text" placeholder="URL da foto" fluid />
 
           <Message
             v-if="$form.download_url?.invalid"
@@ -138,6 +122,7 @@ const onFormSubmit = ({ valid, values }: FormSubmitEvent) => {
           severity="secondary"
           label="Adicionar"
           class="mt-2"
+          :loading="loading"
         />
       </Form>
     </div>
